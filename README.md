@@ -165,6 +165,84 @@ http://localhost:8000/docs
 
 ---
 
+# Docker Hub
+
+Image is published on Docker Hub:
+
+```text
+ngdangkhoa/facemask-api:v1
+```
+
+Pull image:
+
+```bash
+docker pull ngdangkhoa/facemask-api:v1
+```
+
+---
+
+## Kubernetes (K3s)
+
+Namespace:
+
+```bash
+kubectl create namespace facemask
+```
+
+Deploy application:
+
+```bash
+kubectl apply -f deployment/deployment.yaml
+```
+
+Create service:
+
+```bash
+kubectl apply -f deployment/service.yaml
+```
+
+Create ingress:
+
+```bash
+kubectl apply -f deployment/ingress.yaml
+```
+
+Check resources:
+
+```bash
+kubectl get all -n facemask
+```
+
+---
+
+## Deployment Architecture
+
+```text
+Client
+   │
+   ▼
+Traefik Ingress
+   │
+   ▼
+Service
+   │
+   ▼
+FastAPI Pod
+   │
+   ▼
+ONNX Runtime
+   │
+   ▼
+YOLO ONNX Models
+```
+
+---
+
+
+
+
+
+
 ## Technologies
 
 * Python
@@ -173,6 +251,9 @@ http://localhost:8000/docs
 * OpenCV
 * FastAPI
 * Docker
+* Docker Hub
+* Kubernetes (K3s)
+* Traefik Ingress
 
 ---
 
@@ -185,22 +266,23 @@ http://localhost:8000/docs
 * [x] Image upload endpoint
 * [x] Multi-model inference
 * [x] Docker containerization
+* [X] Server deployment
+* [x] K3s installation
+* [x] Kubernetes Deployment
+* [x] Kubernetes Service
+* [x] Traefik Ingress
 
 ### In Progress
 
-* [ ] Server deployment
+* [ ] Kubeflow integration
 
 ### Planned
 
-* [ ] Kubernetes deployment
-* [ ] Kubeflow integration
-* [ ] Automated MLOps pipeline
-
----
-
-## Author
-
-Dang Khoa Nguyen
-
-
-MLOps Learning Project
+* [ ] Kubeflow Pipelines
+* [ ] Automated training workflow
+* [ ] Model versioning
+* [ ] Experiment tracking (MLflow)
+* [ ] CI/CD pipeline
+* [ ] Streamlit demo application
+```
+```
