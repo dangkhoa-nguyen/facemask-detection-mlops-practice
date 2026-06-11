@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facemask-api
+  namespace: facemask
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: facemask-api
+
+  template:
+    metadata:
+      labels:
+        app: facemask-api
+
+    spec:
+      containers:
+      - name: facemask-api
+        image: facemask-api:v1
+
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 8000
