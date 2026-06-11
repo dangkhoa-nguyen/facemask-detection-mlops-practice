@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: facemask-api-ingress
+  namespace: facemask
+
+spec:
+  ingressClassName: traefik
+
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+
+            backend:
+              service:
+                name: facemask-api-service
+                port:
+                  number: 8000
