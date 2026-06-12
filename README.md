@@ -7,12 +7,14 @@ This project demonstrates an end-to-end MLOps workflow for face mask detection u
 The project includes:
 
 * Model inference using ONNX Runtime
+* Support for multiple YOLO models
 * Command-line prediction module
 * FastAPI-based inference service
 * Dockerized deployment
-* Support for multiple YOLO models
+* Kubernetes orchestration using K3s
+* experiment tracking with MLflow
 
-Future work includes deployment on a Linux server, Kubernetes orchestration, and Kubeflow integration.
+Future work includes CI/CD automation, Streamlit-based visualization, and Kubeflow integration.
 
 ---
 
@@ -21,7 +23,6 @@ Future work includes deployment on a Linux server, Kubernetes orchestration, and
 ```text
 .
 ├── api/
-├── configs/
 ├── data/
 │   └── samples/
 ├── deployment/
@@ -212,6 +213,79 @@ Check resources:
 kubectl get all -n facemask
 ```
 
+## MLflow Experiment Tracking
+
+MLflow is used to track training experiments and store model-related artifacts.
+
+### Start MLflow Server
+
+On the Linux server:
+
+```bash
+mlflow server \
+  --host 0.0.0.0 \
+  --port 5000 \
+  --backend-store-uri sqlite:///mlflow.db \
+  --artifacts-destination ./mlartifacts \
+  > mlflow.log 2>&1 &
+```
+
+Access MLflow UI:
+
+```text
+http://<SERVER_IP>:5000
+```
+
+To stop MLflow server:
+```text
+pkill -f "mlflow server"
+```
+
+### Log Existing Training Results
+
+The project includes a tracking utility that automatically logs the latest training run of a model family.
+
+Example:
+
+```bash
+python src/tracking/tracking.py --family yolo26
+```
+
+The script automatically:
+
+1. Finds the latest training directory (e.g. `reports/yolo26/train4`)
+2. Reads training parameters from `args.yaml`
+3. Logs all training metrics from `results.csv`
+4. Uploads generated training artifacts
+5. Uploads the exported ONNX model
+
+### Logged Information
+
+Parameters:
+
+* Training configuration from `args.yaml`
+* Hyperparameters
+* Model settings
+
+Metrics:
+
+* Training loss history
+* Validation loss history
+* Precision
+* Recall
+* mAP50
+* mAP50-95
+
+Artifacts:
+
+* `results.csv`
+* `results.png`
+* `confusion_matrix.png`
+* `confusion_matrix_normalized.png`
+* Precision-Recall curves
+* F1 curves
+* Exported ONNX model
+
 ---
 
 ## Deployment Architecture
@@ -223,7 +297,7 @@ Client
 Traefik Ingress
    │
    ▼
-Service
+Kubernetes Service
    │
    ▼
 FastAPI Pod
@@ -237,10 +311,31 @@ YOLO ONNX Models
 
 ---
 
+## MLOps Workflow
 
+```text
+Training (YOLO)
+      │
+      ▼
+Export ONNX Model
+      │
+      ▼
+MLflow Tracking
+      │
+      ▼
+Docker Image
+      │
+      ▼
+Docker Hub
+      │
+      ▼
+Kubernetes (K3s)
+      │
+      ▼
+FastAPI Inference Service
+```
 
-
-
+---
 
 ## Technologies
 
@@ -253,6 +348,7 @@ YOLO ONNX Models
 * Docker Hub
 * Kubernetes (K3s)
 * Traefik Ingress
+* MLflow
 
 ---
 
@@ -265,23 +361,25 @@ YOLO ONNX Models
 * [x] Image upload endpoint
 * [x] Multi-model inference
 * [x] Docker containerization
-* [X] Server deployment
+* [x] Server deployment
+* [x] Docker Hub integration
 * [x] K3s installation
 * [x] Kubernetes Deployment
 * [x] Kubernetes Service
 * [x] Traefik Ingress
+* [x] MLflow experiment tracking
 
 ### In Progress
 
-* [ ] Kubeflow integration
+* [ ] Streamlit demo application
 
 ### Planned
 
-* [ ] Kubeflow Pipelines
-* [ ] Automated training workflow
-* [ ] Model versioning
-* [ ] Experiment tracking (MLflow)
+* [ ] Model registry with MLflow
 * [ ] CI/CD pipeline
-* [ ] Streamlit demo application
+* [ ] Automated retraining workflow
+* [ ] Kubeflow integration
+* [ ] Kubeflow Pipelines
+
 ```
 ```
