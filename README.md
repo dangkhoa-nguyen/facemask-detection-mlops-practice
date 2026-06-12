@@ -23,8 +23,7 @@ Future work includes deployment on a Linux server, Kubernetes orchestration, and
 ├── api/
 ├── configs/
 ├── data/
-│   ├── samples/
-│   └── uploads/
+│   └── samples/
 ├── deployment/
 ├── models/
 │   ├── yolo11/
@@ -33,7 +32,7 @@ Future work includes deployment on a Linux server, Kubernetes orchestration, and
 ├── reports/
 ├── src/
 │   ├── inference/
-│   └── train/
+│   └── tracking/
 ├── Dockerfile
 ├── requirements.txt
 └── README.md

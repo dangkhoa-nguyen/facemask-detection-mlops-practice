@@ -16,3 +16,7 @@ data/uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# MLflow
+mlruns/
+mlflow.db
