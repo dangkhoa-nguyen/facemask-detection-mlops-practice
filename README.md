@@ -1,5 +1,22 @@
 # Face Mask Detection MLOps Project
 
+---
+
+## Introduction
+
+This project focuses on building a system detecting whether people are wearing face masks in images using YOLO object detection models.
+
+---
+
+## Team Members
+| Họ và Tên | Mã số sinh viên |
+| :--- | :--- |
+| **Nguyễn Đăng Khoa** | `23520746` |
+| **Hồ Nhật Thành** | `23521439` |
+| **Nguyễn Công Thiết** | `23521491` |
+
+---
+
 ## Overview
 
 This project demonstrates an end-to-end MLOps workflow for face mask detection using YOLO models exported to ONNX format.
